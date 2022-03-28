@@ -1,71 +1,23 @@
 <script setup lang="ts">
-import type { History, CharacterItem } from '@/use/types'
+import type { History } from '../use/types'
 import { computed, type Ref, ref } from 'vue'
-import { pinyin } from 'pinyin-pro'
-import {
-  correctColor,
-  wrongPositionColor,
-  defaultColor
-} from '../use/useColors'
+import { init } from '../use/init'
 import { useThemeStore } from '@/stores/theme'
 import { process } from '../use/process'
+import { submit } from '../use/submit'
 
 const theme = computed(() => useThemeStore().theme)
-const answer: string = '吉星高照',
-  answerSheng = pinyin(answer, { pattern: 'initial' }).split(' '),
-  answerYun = pinyin(answer, { pattern: 'final', toneType: 'none' }).split(' '),
-  answerArr = [...answer]
+const { answerSheng, answerYun, answerArr } = init()
 
 const input = ref('')
 const { sheng, yun, inputArr } = process(input)
 const right = computed(() => inputArr.value.length === answerArr.length)
 
 const history: Ref<History[]> = ref([])
-function submit() {
-  let historyItem: History = {
-    input: input.value,
-    charactors: []
-  }
-  for (let i = 0; i < inputArr.value.length; i++) {
-    let inputSheng = sheng.value[i],
-      inputYun = yun.value[i],
-      inputChar = inputArr.value[i],
-      charColor = defaultColor,
-      shengColor = defaultColor,
-      yunColor = defaultColor,
-      isRightChar = false
-
-    if (inputChar === answerArr[i]) {
-      isRightChar = true
-      charColor = correctColor
-    } else if (answerArr.includes(inputChar)) {
-      charColor = wrongPositionColor
-    }
-    if (inputSheng === answerSheng[i]) {
-      shengColor = correctColor
-    } else if (answerSheng.includes(inputSheng)) {
-      shengColor = wrongPositionColor
-    }
-    if (inputYun === answerYun[i]) {
-      yunColor = correctColor
-    } else if (answerYun.includes(inputYun)) {
-      yunColor = wrongPositionColor
-    }
-    historyItem.charactors.push({
-      character: inputChar,
-      charColor,
-      sheng: inputSheng,
-      shengColor,
-      yun: inputYun,
-      yunColor,
-      isRightChar
-    })
-  }
-  history.value.push(historyItem)
+function push() {
+  const item = submit(input, { answerSheng, answerYun, answerArr })
+  history.value.push(item)
   input.value = ''
-  if (historyItem.charactors.every(item => item.isRightChar)) {
-    alert('恭喜你，答对了！')
-  }
 }
 </script>
 
@@ -110,9 +62,7 @@ function submit() {
       :style="{ color: theme === 'light' ? '#333' : '#fff' }"
       class="user-input"
     />
-    <button @click="submit" :disabled="!right" class="submit-button">
-      确定
-    </button>
+    <button @click="push" :disabled="!right" class="submit-button">确定</button>
   </div>
 </template>
 
