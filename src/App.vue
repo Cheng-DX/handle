@@ -19,14 +19,14 @@ const theme = computed(() => useThemeStore().theme)
   width: 100%;
   min-height: 100vh;
   height: 100%;
-  transition: 0.5s;
+  transition: 0.7s;
   font-family: Berkshire Swash, Helvetica, sans-serif;
 }
 .light {
   background-color: #fff;
 }
 .dark {
-  background-color: #333;
-  color: #fff;
+  background-color: #202020;
+  color: #e0dddd;
 }
 </style>
