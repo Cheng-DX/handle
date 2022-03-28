@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
 import { computed } from 'vue'
 import { useThemeStore } from './stores/theme'
 import TheHeader from './components/TheHeader.vue'
+import TheMain from './views/TheMain.vue'
 
 const theme = computed(() => useThemeStore().theme)
 </script>
@@ -10,7 +10,7 @@ const theme = computed(() => useThemeStore().theme)
 <template>
   <div class="root" :class="theme">
     <TheHeader />
-    <RouterView />
+    <TheMain />
   </div>
 </template>
 
@@ -20,7 +20,7 @@ const theme = computed(() => useThemeStore().theme)
   min-height: 100vh;
   height: 100%;
   transition: 0.5s;
-  font-family: 'consolas';
+  font-family: Berkshire Swash, Helvetica, sans-serif;
 }
 .light {
   background-color: #fff;

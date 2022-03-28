@@ -1,46 +1,25 @@
 <script setup lang="ts">
+import type { History, CharacterItem } from '@/use/types'
 import { computed, type Ref, ref } from 'vue'
 import { pinyin } from 'pinyin-pro'
-import { useThemeStore } from '../stores/theme'
+import {
+  correctColor,
+  wrongPositionColor,
+  defaultColor
+} from '../use/useColors'
+import { useThemeStore } from '@/stores/theme'
+import { process } from '../use/process'
 
-const themeStore = useThemeStore()
-const theme = computed(() => themeStore.theme)
-
+const theme = computed(() => useThemeStore().theme)
 const answer: string = '吉星高照',
   answerSheng = pinyin(answer, { pattern: 'initial' }).split(' '),
   answerYun = pinyin(answer, { pattern: 'final', toneType: 'none' }).split(' '),
   answerArr = [...answer]
 
 const input = ref('')
-const sheng = computed(() => {
-  let shengStr = pinyin(input.value, { pattern: 'initial' })
-  return shengStr.split(' ').splice(0, answerSheng.length)
-})
-const yun = computed(() => {
-  let yunStr = pinyin(input.value, { pattern: 'final', toneType: 'none' })
-  return yunStr.split(' ').splice(0, answerYun.length)
-})
-const inputArr = computed(() => {
-  return [...input.value].splice(0, answerArr.length)
-})
+const { sheng, yun, inputArr } = process(input)
+const right = computed(() => inputArr.value.length === answerArr.length)
 
-const correctColor = '#5d5fef',
-  wrongPositionColor = '#ef5da8',
-  defaultColor = 'grey'
-
-type CharacterItem = {
-  character: string
-  charColor: string
-  sheng: string
-  shengColor: string
-  yun: string
-  yunColor: string
-  isRightChar: boolean
-}
-type History = {
-  input: string
-  charactors: CharacterItem[]
-}
 const history: Ref<History[]> = ref([])
 function submit() {
   let historyItem: History = {
@@ -83,8 +62,9 @@ function submit() {
     })
   }
   history.value.push(historyItem)
+  input.value = ''
   if (historyItem.charactors.every(item => item.isRightChar)) {
-    showSuccessAnimation()
+    alert('恭喜你，答对了！')
   }
 }
 </script>
@@ -130,7 +110,9 @@ function submit() {
       :style="{ color: theme === 'light' ? '#333' : '#fff' }"
       class="user-input"
     />
-    <button @click="submit" class="submit-button">确定</button>
+    <button @click="submit" :disabled="!right" class="submit-button">
+      确定
+    </button>
   </div>
 </template>
 
@@ -190,13 +172,17 @@ function submit() {
   margin-top: 20px;
   font-size: 16px;
   text-align: center;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 5px;
   outline: none;
-  cursor: pointer;
+  background-color: #0d818eb7;
+  color: #fff;
 }
 .submit-button:hover {
-  background-color: #ccc;
-  transition: 0.5s;
+  transition: 0.2s;
+  background-color: #10a8b9d7;
+}
+.submit-button:disabled {
+  background-color: #4b5563;
 }
 </style>
