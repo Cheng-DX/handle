@@ -2,22 +2,26 @@
 import { computed } from 'vue'
 import { useThemeStore } from '../stores/theme'
 import ThemeIcon from './ThemeIcon.vue'
+import HelpIcon from './HelpIcon.vue'
 
 const themeStore = useThemeStore()
 const theme = computed(() => themeStore.theme)
 function changeTheme() {
   themeStore.changeTheme()
 }
+function help() {
+  window.open('https://handle.antfu.me')
+}
 </script>
 
 <template>
   <div class="header-root">
     <div class="the-header">
-      <button class="theme-button" @click="changeTheme">
-        <ThemeIcon :theme="theme" />
+      <button class="options-button" @click="help">
+        <HelpIcon :theme="theme" />
       </button>
-      <h1 class="title">handle</h1>
-      <button class="theme-button" @click="changeTheme">
+      <h1 class="title">HANDLE</h1>
+      <button class="options-button" @click="changeTheme">
         <ThemeIcon :theme="theme" />
       </button>
     </div>
@@ -39,7 +43,7 @@ function changeTheme() {
   position: static;
   top: 0;
 }
-.theme-button {
+.options-button {
   float: right;
   background-color: transparent;
   border: none;
