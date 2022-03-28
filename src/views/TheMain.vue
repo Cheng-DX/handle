@@ -1,27 +1,50 @@
 <script setup lang="ts">
 import type { History } from '../use/types'
-import { computed, type Ref, ref } from 'vue'
+import { computed, type Ref, ref, watch } from 'vue'
 import { init } from '../use/init'
 import { useThemeStore } from '@/stores/theme'
 import { process } from '../use/process'
 import { submit } from '../use/submit'
 
 const theme = computed(() => useThemeStore().theme)
-const { answerSheng, answerYun, answerArr } = init()
+let { answer, answerSheng, answerYun, answerArr } = init()
+
+const answerRef = ref(answer)
 
 const input = ref('')
 const { sheng, yun, inputArr } = process(input)
 const right = computed(() => inputArr.value.length === answerArr.length)
 
+const done = ref(false)
 const history: Ref<History[]> = ref([])
 function push() {
   const item = submit(input, { answerSheng, answerYun, answerArr })
   history.value.push(item)
   input.value = ''
+  if (item.charactors.every(char => char.isRightChar)) {
+    done.value = true
+  }
+}
+
+function continueGame() {
+  ;({ answer, answerSheng, answerYun, answerArr } = init())
+  answerRef.value = answer
+  done.value = false
+  history.value = []
+}
+
+function reset() {
+  history.value = []
 }
 </script>
 
 <template>
+  <div v-if="done" class="modal">
+    <div class="modal-content">
+      <div>{{ answerRef }}</div>
+      <button @click="continueGame" class="submit-button">再来一局</button>
+    </div>
+  </div>
   <div class="main-root">
     <div>
       <div class="history-list">
@@ -59,14 +82,46 @@ function push() {
     <input
       v-model="input"
       placeholder="输入四字词语..."
+      @keyup.enter="push"
       :style="{ color: theme === 'light' ? '#333' : '#fff' }"
       class="user-input"
     />
-    <button @click="push" :disabled="!right" class="submit-button">确定</button>
+    <div>
+      <button @click="reset" class="submit-button">清空历史</button>
+      <button @click="push" :disabled="!right" class="submit-button">
+        确定
+      </button>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #00000096;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  width: 300px;
+  height: 200px;
+  background: #f1dfdf;
+  color: #000;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-size: 30px;
+  letter-spacing: 10px;
+}
 .main-root {
   width: 100%;
   display: flex;
@@ -120,6 +175,7 @@ function push() {
   width: 87px;
   height: 40px;
   margin-top: 20px;
+  margin-inline: 10px;
   font-size: 16px;
   text-align: center;
   border: none;
