@@ -1,5 +1,5 @@
-const correctColor = '#5d5fef'
-const wrongPositionColor = '#ef5da8'
-const defaultColor = 'grey'
+const CORRECT_COLOR = '#5d5fef'
+const WRONG_POSITION_COLOR = '#ef5da8'
+const DEFAULT_COLOR = 'grey'
 
-export { correctColor, wrongPositionColor, defaultColor }
+export { CORRECT_COLOR, WRONG_POSITION_COLOR, DEFAULT_COLOR }

@@ -1,7 +1,7 @@
 import type { History } from './types'
 import type { Ref } from 'vue'
 import { process } from './process'
-import { correctColor, wrongPositionColor, defaultColor } from './useColors'
+import { CORRECT_COLOR, WRONG_POSITION_COLOR, DEFAULT_COLOR } from './useColors'
 
 export function submit(input: Ref<string>, answer: any) {
   const { answerSheng, answerYun, answerArr } = answer
@@ -15,26 +15,26 @@ export function submit(input: Ref<string>, answer: any) {
     let inputSheng = sheng.value[i],
       inputYun = yun.value[i],
       inputChar = inputArr.value[i],
-      charColor = defaultColor,
-      shengColor = defaultColor,
-      yunColor = defaultColor,
+      charColor = DEFAULT_COLOR,
+      shengColor = DEFAULT_COLOR,
+      yunColor = DEFAULT_COLOR,
       isRightChar = false
 
     if (inputChar === answerArr[i]) {
       isRightChar = true
-      charColor = correctColor
+      charColor = CORRECT_COLOR
     } else if (answerArr.includes(inputChar)) {
-      charColor = wrongPositionColor
+      charColor = WRONG_POSITION_COLOR
     }
     if (inputSheng === answerSheng[i]) {
-      shengColor = correctColor
+      shengColor = CORRECT_COLOR
     } else if (answerSheng.includes(inputSheng)) {
-      shengColor = wrongPositionColor
+      shengColor = WRONG_POSITION_COLOR
     }
     if (inputYun === answerYun[i]) {
-      yunColor = correctColor
+      yunColor = CORRECT_COLOR
     } else if (answerYun.includes(inputYun)) {
-      yunColor = wrongPositionColor
+      yunColor = WRONG_POSITION_COLOR
     }
     historyItem.charactors.push({
       character: inputChar,
