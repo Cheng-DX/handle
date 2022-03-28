@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed, type Ref, ref } from 'vue'
 import { pinyin } from 'pinyin-pro'
+import { useThemeStore } from '../stores/theme'
+
+const themeStore = useThemeStore()
+const theme = computed(() => themeStore.theme)
 
 const answer: string = '吉星高照',
   answerSheng = pinyin(answer, { pattern: 'initial' }).split(' '),
@@ -20,8 +24,8 @@ const inputArr = computed(() => {
   return [...input.value].splice(0, answerArr.length)
 })
 
-const correctColor = 'blue',
-  wrongPositionColor = 'red',
+const correctColor = '#5d5fef',
+  wrongPositionColor = '#ef5da8',
   defaultColor = 'grey'
 
 type CharacterItem = {
@@ -79,80 +83,112 @@ function submit() {
     })
   }
   history.value.push(historyItem)
+  if (historyItem.charactors.every(item => item.isRightChar)) {
+    showSuccessAnimation()
+  }
 }
 </script>
 
 <template>
   <div class="main-root">
-    <div v-for="historyItem in history" class="history-list">
-      <div class="content">
-        <div v-for="charItem in historyItem.charactors" class="char-box">
-          <div class="pinyin-box">
-            <span class="sheng-span" :style="{ color: charItem.shengColor }">{{
-              charItem.sheng
-            }}</span>
-            <span class="yun-span" :style="{ color: charItem.yunColor }">{{
-              charItem.yun
-            }}</span>
-          </div>
-          <div
-            class="text-box"
-            :style="{
-              color: charItem.charColor
-            }"
-          >
-            {{ charItem.character }}
+    <div>
+      <div class="history-list">
+        <div v-for="historyItem in history" class="line">
+          <div v-for="charItem in historyItem.charactors" class="char-box">
+            <div>
+              <span :style="{ color: charItem.shengColor }">{{
+                charItem.sheng
+              }}</span>
+              <span :style="{ color: charItem.yunColor }">{{
+                charItem.yun
+              }}</span>
+            </div>
+            <div
+              :style="{
+                color: charItem.charColor
+              }"
+              class="charactor"
+            >
+              {{ charItem.character }}
+            </div>
           </div>
         </div>
       </div>
+      <div class="realtime">
+        <div v-for="i in answerArr.length" class="char-box">
+          <div>
+            <span>{{ sheng[i - 1] }}</span>
+            <span>{{ yun[i - 1] }}</span>
+          </div>
+          <div class="charactor">{{ inputArr[i - 1] }}</div>
+        </div>
+      </div>
     </div>
-    <input v-model="input" class="user-input" />
-    <button @click="submit" class="submit-button">SUBMIT</button>
-    <div v-if="false">
-      {{ history }}
-    </div>
+    <input
+      v-model="input"
+      placeholder="输入四字词语..."
+      :style="{ color: theme === 'light' ? '#333' : '#fff' }"
+      class="user-input"
+    />
+    <button @click="submit" class="submit-button">确定</button>
   </div>
 </template>
 
 <style scoped>
 .main-root {
   width: 100%;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
 }
-.content {
+.line {
   width: 320px;
   height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.char-box {
+.history-list {
+  margin-top: 2px;
+}
+.realtime {
+  width: 320px;
   height: 80px;
-  width: 80px;
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.char-box {
+  height: 70px;
+  width: 75px;
   border: 1px solid #ccc;
-  margin: 1px;
+  margin: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+}
+.charactor {
+  font-size: 30px;
 }
 .user-input {
-  width: 60%;
-  height: 40px;
-  margin: 1px;
-  background-color: transparent;
-  border: none;
-  border-radius: 5px;
-  outline: 1px solid #ccc;
+  width: 306px;
+  height: 50px;
+  margin-top: 10px;
   text-align: center;
+  font-size: 17px;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  outline: none;
 }
 .submit-button {
-  width: 100px;
-  height: 30px;
+  width: 87px;
+  height: 40px;
+  margin-top: 20px;
+  font-size: 16px;
   text-align: center;
   border: 1px solid #ccc;
   border-radius: 5px;

@@ -11,30 +11,36 @@ function changeTheme() {
 </script>
 
 <template>
-  <div class="the-header">
-    <h1 class="title">handle</h1>
-    <button class="theme-button" @click="changeTheme">
-      <ThemeIcon :theme="theme" />
-    </button>
+  <div class="header-root">
+    <div class="the-header">
+      <button class="theme-button" @click="changeTheme">
+        <ThemeIcon :theme="theme" />
+      </button>
+      <h1 class="title">handle</h1>
+      <button class="theme-button" @click="changeTheme">
+        <ThemeIcon :theme="theme" />
+      </button>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.header-root {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
 .the-header {
-  width: 100%;
-  height: 50px;
+  width: 400px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-.title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  position: static;
+  top: 0;
 }
 .theme-button {
-  position: absolute;
-  right: 10px;
+  float: right;
   background-color: transparent;
   border: none;
   font-size: 20px;
