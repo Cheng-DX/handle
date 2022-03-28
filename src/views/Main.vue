@@ -10,64 +10,106 @@ const answer: string = '吉星高照',
 const input = ref('')
 const sheng = computed(() => {
   let shengStr = pinyin(input.value, { pattern: 'initial' })
-  return shengStr.split(' ')
+  return shengStr.split(' ').splice(0, answerSheng.length)
 })
 const yun = computed(() => {
   let yunStr = pinyin(input.value, { pattern: 'final', toneType: 'none' })
-  return yunStr.split(' ')
+  return yunStr.split(' ').splice(0, answerYun.length)
 })
 const inputArr = computed(() => {
-  return [...input.value]
+  return [...input.value].splice(0, answerArr.length)
 })
 
 const correctColor = 'blue',
   wrongPositionColor = 'red',
-  otherColor = 'grey'
+  defaultColor = 'grey'
 
+type CharacterItem = {
+  character: string
+  charColor: string
+  sheng: string
+  shengColor: string
+  yun: string
+  yunColor: string
+  isRightChar: boolean
+}
 type History = {
   input: string
-  sheng: string[]
-  yun: string[]
-  inputArr: string[]
-  correct: boolean
-  wrongPosition: boolean
-  other: boolean
+  charactors: CharacterItem[]
 }
-
 const history: Ref<History[]> = ref([])
+function submit() {
+  let historyItem: History = {
+    input: input.value,
+    charactors: []
+  }
+  for (let i = 0; i < inputArr.value.length; i++) {
+    let inputSheng = sheng.value[i],
+      inputYun = yun.value[i],
+      inputChar = inputArr.value[i],
+      charColor = defaultColor,
+      shengColor = defaultColor,
+      yunColor = defaultColor,
+      isRightChar = false
 
-function check() {}
+    if (inputChar === answerArr[i]) {
+      isRightChar = true
+      charColor = correctColor
+    } else if (answerArr.includes(inputChar)) {
+      charColor = wrongPositionColor
+    }
+    if (inputSheng === answerSheng[i]) {
+      shengColor = correctColor
+    } else if (answerSheng.includes(inputSheng)) {
+      shengColor = wrongPositionColor
+    }
+    if (inputYun === answerYun[i]) {
+      yunColor = correctColor
+    } else if (answerYun.includes(inputYun)) {
+      yunColor = wrongPositionColor
+    }
+    historyItem.charactors.push({
+      character: inputChar,
+      charColor,
+      sheng: inputSheng,
+      shengColor,
+      yun: inputYun,
+      yunColor,
+      isRightChar
+    })
+  }
+  history.value.push(historyItem)
+}
 </script>
 
 <template>
   <div class="main-root">
-    <div class="content">
-      <div v-for="i in 4" class="char-box">
-        <div class="pinyin-box">
-          <span class="sheng-span">{{ sheng[i - 1] }}</span>
-          <span class="yun-span">{{ yun[i - 1] }}</span>
+    <div v-for="historyItem in history" class="history-list">
+      <div class="content">
+        <div v-for="charItem in historyItem.charactors" class="char-box">
+          <div class="pinyin-box">
+            <span class="sheng-span" :style="{ color: charItem.shengColor }">{{
+              charItem.sheng
+            }}</span>
+            <span class="yun-span" :style="{ color: charItem.yunColor }">{{
+              charItem.yun
+            }}</span>
+          </div>
+          <div
+            class="text-box"
+            :style="{
+              color: charItem.charColor
+            }"
+          >
+            {{ charItem.character }}
+          </div>
         </div>
-        <div class="text-box">{{ inputArr[i - 1] }}</div>
       </div>
     </div>
     <input v-model="input" class="user-input" />
-    <div>
-      {{ sheng }}
-    </div>
-    <div>
-      {{ yun }}
-    </div>
-    <div>
-      {{ answerSheng }}
-    </div>
-    <div>
-      {{ answerYun }}
-    </div>
-    <div>
-      {{ answerArr }}
-    </div>
-    <div>
-      {{ inputArr }}
+    <button @click="submit" class="submit-button">SUBMIT</button>
+    <div v-if="false">
+      {{ history }}
     </div>
   </div>
 </template>
@@ -99,12 +141,26 @@ function check() {}
   justify-content: center;
 }
 .user-input {
-  width: 50%;
+  width: 60%;
   height: 40px;
   margin: 1px;
   background-color: transparent;
   border: none;
-  outline: none;
+  border-radius: 5px;
+  outline: 1px solid #ccc;
   text-align: center;
+}
+.submit-button {
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+.submit-button:hover {
+  background-color: #ccc;
+  transition: 0.5s;
 }
 </style>
