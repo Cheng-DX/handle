@@ -1,5 +1,4 @@
 import { pinyin } from 'pinyin-pro'
-import { ref } from 'vue'
 
 function random() {
   const answerList = [

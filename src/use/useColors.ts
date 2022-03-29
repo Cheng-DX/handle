@@ -1,5 +1,5 @@
-const CORRECT_COLOR = '#5d5fef'
-const WRONG_POSITION_COLOR = '#ef5da8'
+const CORRECT_COLOR = '#65aef4'
+const WRONG_POSITION_COLOR = '#eebe14'
 const DEFAULT_COLOR = 'grey'
 
 export { CORRECT_COLOR, WRONG_POSITION_COLOR, DEFAULT_COLOR }

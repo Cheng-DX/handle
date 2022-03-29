@@ -108,6 +108,7 @@ function reset() {
   justify-content: center;
   align-items: center;
 }
+
 .modal-content {
   width: 300px;
   height: 200px;
