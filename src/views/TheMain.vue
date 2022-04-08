@@ -163,7 +163,7 @@ function reset() {
   font-size: 30px;
 }
 .user-input {
-  width: 306px;
+  width: 300px;
   height: 50px;
   margin-top: 10px;
   text-align: center;
