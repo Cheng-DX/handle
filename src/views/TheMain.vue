@@ -87,7 +87,7 @@ function reset() {
       class="user-input"
     />
     <div>
-      <button @click="reset" class="submit-button">清空历史</button>
+      <button @click="reset" class="submit-button">清空</button>
       <button @click="push" :disabled="!right" class="submit-button">
         确定
       </button>
