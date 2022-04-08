@@ -42,7 +42,7 @@ function reset() {
   <div v-if="done" class="modal">
     <div class="modal-content">
       <div>{{ answerRef }}</div>
-      <button @click="continueGame" class="submit-button">再来一局</button>
+      <button @click="continueGame" class="submit-button">NEXT</button>
     </div>
   </div>
   <div class="main-root">
