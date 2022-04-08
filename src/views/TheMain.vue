@@ -5,8 +5,15 @@ import { init } from '../use/init'
 import { useThemeStore } from '@/stores/theme'
 import { process } from '../use/process'
 import { submit } from '../use/submit'
+import { useDark } from '@vueuse/core'
 
 const theme = computed(() => useThemeStore().theme)
+const isDark = useDark()
+if (isDark) {
+  useThemeStore().setTheme('dark')
+} else {
+  useThemeStore().setTheme('light')
+}
 let { answer, answerSheng, answerYun, answerArr } = init()
 
 const answerRef = ref(answer)
@@ -36,6 +43,8 @@ function continueGame() {
 function reset() {
   history.value = []
 }
+
+const wannaChange = computed(() => history.value.length >= 10)
 </script>
 
 <template>
@@ -87,7 +96,17 @@ function reset() {
       class="user-input"
     />
     <div>
-      <button @click="reset" class="submit-button">清空</button>
+      <button v-if="!wannaChange" @click="reset" class="submit-button">
+        清空
+      </button>
+      <button
+        v-else
+        @click="continueGame"
+        class="submit-button"
+        style="background-color: sienna"
+      >
+        换一个
+      </button>
       <button @click="push" :disabled="!right" class="submit-button">
         确定
       </button>

@@ -10,7 +10,7 @@ function changeTheme() {
   themeStore.changeTheme()
 }
 function help() {
-  window.open('https://handle.antfu.me')
+  // window.open('https://handle.antfu.me')
 }
 </script>
 
@@ -49,5 +49,8 @@ function help() {
   border: none;
   font-size: 20px;
   cursor: pointer;
+}
+.options-button.focus {
+  background-color: transparent;
 }
 </style>

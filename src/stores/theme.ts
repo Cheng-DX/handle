@@ -8,6 +8,9 @@ export const useThemeStore = defineStore({
   actions: {
     changeTheme() {
       this.theme === 'light' ? (this.theme = 'dark') : (this.theme = 'light')
+    },
+    setTheme(theme: string) {
+      this.theme = theme
     }
   }
 })

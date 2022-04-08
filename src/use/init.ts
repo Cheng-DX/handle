@@ -1,16 +1,8 @@
 import { pinyin } from 'pinyin-pro'
+import idioms from '../data/idioms.json'
 
 function random() {
-  const answerList = [
-    '吉星高照',
-    '班门弄斧',
-    '水落石出',
-    '巧夺天工',
-    '名震天下',
-    '武运昌隆',
-    '鬼斧神工',
-    '擅作主张'
-  ]
+  const answerList = idioms.words
   return answerList[Math.floor(Math.random() * answerList.length)]
 }
 
