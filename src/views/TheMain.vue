@@ -6,6 +6,7 @@ import { useThemeStore } from '@/stores/theme'
 import { process } from '../use/process'
 import { submit } from '../use/submit'
 import { useDark } from '@vueuse/core'
+import { useNumberStore } from '@/stores/number'
 
 const theme = computed(() => useThemeStore().theme)
 const isDark = useDark()
@@ -14,7 +15,9 @@ if (isDark) {
 } else {
   useThemeStore().setTheme('light')
 }
-let { answer, answerSheng, answerYun, answerArr } = init()
+let { answer, answerSheng, answerYun, answerArr, stringNum } = init()
+const numberStore = useNumberStore()
+numberStore.setNumber(stringNum)
 
 const answerRef = ref(answer)
 
@@ -25,17 +28,20 @@ const right = computed(() => inputArr.value.length === answerArr.length)
 const done = ref(false)
 const history: Ref<History[]> = ref([])
 function push() {
-  const item = submit(input, { answerSheng, answerYun, answerArr })
-  history.value.push(item)
-  input.value = ''
-  if (item.charactors.every(char => char.isRightChar)) {
-    done.value = true
+  if (right.value) {
+    const item = submit(input, { answerSheng, answerYun, answerArr })
+    history.value.push(item)
+    input.value = ''
+    if (item.charactors.every(char => char.isRightChar)) {
+      done.value = true
+    }
   }
 }
 
 function continueGame() {
-  ;({ answer, answerSheng, answerYun, answerArr } = init())
+  ;({ answer, answerSheng, answerYun, answerArr, stringNum } = init())
   answerRef.value = answer
+  numberStore.setNumber(stringNum)
   done.value = false
   history.value = []
 }

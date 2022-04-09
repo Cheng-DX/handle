@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useThemeStore } from '../stores/theme'
 import ThemeIcon from './ThemeIcon.vue'
 import HelpIcon from './HelpIcon.vue'
+import { useNumberStore } from '@/stores/number'
 
 const themeStore = useThemeStore()
 const theme = computed(() => themeStore.theme)
@@ -12,6 +13,8 @@ function changeTheme() {
 function help() {
   // window.open('https://handle.antfu.me')
 }
+const numberStore = useNumberStore()
+const number = computed(() => numberStore.number)
 </script>
 
 <template>
@@ -20,7 +23,7 @@ function help() {
       <button class="options-button" @click="help">
         <HelpIcon :theme="theme" />
       </button>
-      <h1 class="title">HANDLE</h1>
+      <h1 class="title">{{ `HANDLE ${number}` }}</h1>
       <button class="options-button" @click="changeTheme">
         <ThemeIcon :theme="theme" />
       </button>
