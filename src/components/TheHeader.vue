@@ -40,7 +40,7 @@ const number = computed(() => numberStore.number)
   height: 80px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   position: static;
   top: 0;
 }
