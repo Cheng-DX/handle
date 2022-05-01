@@ -10,9 +10,6 @@ const theme = computed(() => themeStore.theme)
 function changeTheme() {
   themeStore.changeTheme()
 }
-function help() {
-  // window.open('https://handle.antfu.me')
-}
 const numberStore = useNumberStore()
 const number = computed(() => numberStore.number)
 </script>
@@ -20,9 +17,9 @@ const number = computed(() => numberStore.number)
 <template>
   <div class="header-root">
     <div class="the-header">
-      <button class="options-button" @click="help">
+      <a class="options-button" href="https://github.com/Cheng-DX/handle">
         <HelpIcon :theme="theme" />
-      </button>
+      </a>
       <h1 class="title">{{ `HANDLE ${number}` }}</h1>
       <button class="options-button" @click="changeTheme">
         <ThemeIcon :theme="theme" />
@@ -37,6 +34,7 @@ const number = computed(() => numberStore.number)
   flex-direction: row;
   justify-content: center;
 }
+
 .the-header {
   width: 400px;
   height: 80px;
@@ -46,6 +44,7 @@ const number = computed(() => numberStore.number)
   position: static;
   top: 0;
 }
+
 .options-button {
   float: right;
   background-color: transparent;
@@ -53,6 +52,7 @@ const number = computed(() => numberStore.number)
   font-size: 20px;
   cursor: pointer;
 }
+
 .options-button.focus {
   background-color: transparent;
 }

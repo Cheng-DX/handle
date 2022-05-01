@@ -10,6 +10,7 @@ import { useNumberStore } from '@/stores/number'
 
 const theme = computed(() => useThemeStore().theme)
 const isDark = useDark()
+
 if (isDark) {
   useThemeStore().setTheme('dark')
 } else {
@@ -39,7 +40,7 @@ function push() {
 }
 
 function continueGame() {
-  ;({ answer, answerSheng, answerYun, answerArr, stringNum } = init())
+  ; ({ answer, answerSheng, answerYun, answerArr, stringNum } = init())
   answerRef.value = answer
   numberStore.setNumber(stringNum)
   done.value = false
@@ -67,18 +68,15 @@ const wannaChange = computed(() => history.value.length >= 10)
           <div v-for="charItem in historyItem.charactors" class="char-box">
             <div>
               <span :style="{ color: charItem.shengColor }">{{
-                charItem.sheng
+                  charItem.sheng
               }}</span>
               <span :style="{ color: charItem.yunColor }">{{
-                charItem.yun
+                  charItem.yun
               }}</span>
             </div>
-            <div
-              :style="{
-                color: charItem.charColor
-              }"
-              class="charactor"
-            >
+            <div :style="{
+              color: charItem.charColor
+            }" class="charactor">
               {{ charItem.character }}
             </div>
           </div>
@@ -94,23 +92,13 @@ const wannaChange = computed(() => history.value.length >= 10)
         </div>
       </div>
     </div>
-    <input
-      v-model="input"
-      placeholder="输入四字词语..."
-      @keyup.enter="push"
-      :style="{ color: theme === 'light' ? '#333' : '#fff' }"
-      class="user-input"
-    />
+    <input v-model="input" placeholder="输入四字词语..." @keyup.enter="push"
+      :style="{ color: theme === 'light' ? '#333' : '#fff' }" class="user-input" />
     <div>
       <button v-if="!wannaChange" @click="reset" class="submit-button">
         清空
       </button>
-      <button
-        v-else
-        @click="continueGame"
-        class="submit-button"
-        style="background-color: sienna"
-      >
+      <button v-else @click="continueGame" class="submit-button" style="background-color: sienna">
         换一个
       </button>
       <button @click="push" :disabled="!right" class="submit-button">
@@ -148,6 +136,7 @@ const wannaChange = computed(() => history.value.length >= 10)
   font-size: 30px;
   letter-spacing: 10px;
 }
+
 .main-root {
   width: 100%;
   display: flex;
@@ -155,6 +144,7 @@ const wannaChange = computed(() => history.value.length >= 10)
   align-items: center;
   justify-content: space-between;
 }
+
 .line {
   width: 320px;
   height: 80px;
@@ -162,9 +152,11 @@ const wannaChange = computed(() => history.value.length >= 10)
   align-items: center;
   justify-content: center;
 }
+
 .history-list {
   margin-top: 2px;
 }
+
 .realtime {
   width: 320px;
   height: 80px;
@@ -173,6 +165,7 @@ const wannaChange = computed(() => history.value.length >= 10)
   align-items: center;
   justify-content: center;
 }
+
 .char-box {
   height: 70px;
   width: 75px;
@@ -184,9 +177,11 @@ const wannaChange = computed(() => history.value.length >= 10)
   justify-content: center;
   font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 }
+
 .charactor {
   font-size: 30px;
 }
+
 .user-input {
   width: 300px;
   height: 50px;
@@ -197,6 +192,7 @@ const wannaChange = computed(() => history.value.length >= 10)
   border: 1px solid #ccc;
   outline: none;
 }
+
 .submit-button {
   width: 87px;
   height: 40px;
@@ -210,10 +206,12 @@ const wannaChange = computed(() => history.value.length >= 10)
   background-color: #0d818eb7;
   color: #fff;
 }
+
 .submit-button:hover {
   transition: 0.2s;
   background-color: #10a8b9d7;
 }
+
 .submit-button:disabled {
   background-color: #4b5563;
 }
