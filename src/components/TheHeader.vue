@@ -36,7 +36,7 @@ const number = computed(() => numberStore.number)
 }
 
 .the-header {
-  width: 400px;
+  min-width: 400px;
   height: 80px;
   display: flex;
   align-items: center;
